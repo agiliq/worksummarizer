@@ -13,10 +13,10 @@
 
 ### Usage
 
-Add your authentication details in `auth.py`
-Add list of email recipients in `recipients.py`
-`python summarize.py` will create the summary and email it.
-`python summarize.py noemail` will print the summary to stdout.
+Add your authentication details in `auth.py`  
+Add list of email recipients in `recipients.py`  
+`python summarize.py` will create the summary and email it.  
+`python summarize.py noemail` will print the summary to stdout.  
 
 ### Requirements
 See requirements.txt
