@@ -1,0 +1,4 @@
+#auth = (
+#    '', # Username
+#    '' # Password
+#    )
