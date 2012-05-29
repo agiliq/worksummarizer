@@ -66,10 +66,12 @@ def main():
     html = "<html><body>"
     holiday = True
     for k, v in user_activity.iteritems():
+        #display summary per each user.
         if v:
             html += "<div>" + "<h3>" + k + "</h3>" + v + "</div>"
             holiday = False
     html += "</body></html>"
+    #check if no activity done. if so do not send mail.
     if not holiday:
         message = sendgrid.Message("ramana@agiliq.com", subject, "", "<div>" + html + "</div>")
         for person in email_to:
