@@ -1,0 +1,4 @@
+sendgrid-python
+python-dateutil
+requests
+lxml
