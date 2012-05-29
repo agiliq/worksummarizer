@@ -5,7 +5,7 @@ import sendgrid
 from datetime import datetime, timedelta
 from dateutil import tz
 from dateutil.parser import parse
-from assembla.mailing_list import email_to
+from mailing_list import email_to
 
 #run this code once at the end of day, or setup a crontab.
 
