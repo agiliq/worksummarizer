@@ -1,0 +1,1492 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Repos services &mdash; pygithub3 0.3 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.3',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="pygithub3 0.3 documentation" href="index.html" />
+    <link rel="up" title="Services" href="services.html" />
+    <link rel="next" title="Gists services" href="gists.html" />
+    <link rel="prev" title="Users services" href="users.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="gists.html" title="Gists services"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="users.html" title="Users services"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">pygithub3 0.3 documentation</a> &raquo;</li>
+          <li><a href="services.html" accesskey="U">Services</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="repos-services">
+<span id="repos-service"></span><h1>Repos services<a class="headerlink" href="#repos-services" title="Permalink to this headline">¶</a></h1>
+<p><strong>Fast sample</strong>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">pygithub3</span> <span class="kn">import</span> <span class="n">Github</span>
+
+<span class="n">gh</span> <span class="o">=</span> <span class="n">Github</span><span class="p">()</span>
+
+<span class="n">django_compressor</span> <span class="o">=</span> <span class="n">gh</span><span class="o">.</span><span class="n">repos</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="s">&#39;jezdez&#39;</span><span class="p">,</span> <span class="n">repo</span><span class="o">=</span><span class="s">&#39;django_compressor&#39;</span><span class="p">)</span>
+<span class="n">requests_collaborators</span> <span class="o">=</span> <span class="n">gh</span><span class="o">.</span><span class="n">repos</span><span class="o">.</span><span class="n">collaborators</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="s">&#39;kennethreitz&#39;</span><span class="p">,</span>
+    <span class="n">repo</span><span class="o">=</span><span class="s">&#39;requests&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="section" id="config-precedence">
+<span id="id1"></span><h2>Config precedence<a class="headerlink" href="#config-precedence" title="Permalink to this headline">¶</a></h2>
+<p>Some request always need <tt class="docutils literal"><span class="pre">user</span></tt> and <tt class="docutils literal"><span class="pre">repo</span></tt> parameters, both, to identify
+a <cite>repository</cite>. Because there are a lot of requests which need that parameters,
+you can <a class="reference internal" href="services.html#config-each-service"><em>Config each service</em></a> with <tt class="docutils literal"><span class="pre">user</span></tt> and <tt class="docutils literal"><span class="pre">repo</span></tt> globally.</p>
+<p>So several requests follow a simple precedence
+<tt class="docutils literal"><span class="pre">user_in_arg</span> <span class="pre">&gt;</span> <span class="pre">user_in_config</span> <span class="pre">|</span> <span class="pre">repo_in_arg</span> <span class="pre">&gt;</span> <span class="pre">repo_in_config</span></tt></p>
+<p>You can see it better with an example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">pygithub3</span> <span class="kn">import</span> <span class="n">Github</span>
+
+<span class="n">gh</span> <span class="o">=</span> <span class="n">Github</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="s">&#39;octocat&#39;</span><span class="p">,</span> <span class="n">repo</span><span class="o">=</span><span class="s">&#39;oct_repo&#39;</span><span class="p">)</span>
+<span class="n">oct_repo</span> <span class="o">=</span> <span class="n">gh</span><span class="o">.</span><span class="n">repos</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+<span class="n">another_repo_from_octocat</span> <span class="o">=</span> <span class="n">gh</span><span class="o">.</span><span class="n">repos</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">repo</span><span class="o">=</span><span class="s">&#39;another_repo&#39;</span><span class="p">)</span>
+
+<span class="n">django_compressor</span> <span class="o">=</span> <span class="n">gh</span><span class="o">.</span><span class="n">repos</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="s">&#39;jezdez&#39;</span><span class="p">,</span> <span class="n">repo</span><span class="o">=</span><span class="s">&#39;django_compressor&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>Remember that each service is isolated from the rest</p>
+<div class="last highlight-python"><div class="highlight"><pre><span class="c"># continue example...</span>
+<span class="n">gh</span><span class="o">.</span><span class="n">repos</span><span class="o">.</span><span class="n">commits</span><span class="o">.</span><span class="n">set_user</span><span class="p">(</span><span class="s">&#39;copitux&#39;</span><span class="p">)</span>
+<span class="n">oct_repo</span> <span class="o">=</span> <span class="n">gh</span><span class="o">.</span><span class="n">repos</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+<span class="n">oct_repo_collaborators</span> <span class="o">=</span> <span class="n">gh</span><span class="o">.</span><span class="n">repos</span><span class="o">.</span><span class="n">collaborators</span><span class="o">.</span><span class="n">list</span><span class="p">()</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+
+<span class="c"># Fail because copitux/oct_repo doesn&#39;t exist</span>
+<span class="n">gh</span><span class="o">.</span><span class="n">repos</span><span class="o">.</span><span class="n">commits</span><span class="o">.</span><span class="n">list_comments</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="repo">
+<h2>Repo<a class="headerlink" href="#repo" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pygithub3.services.repos.Repo">
+<em class="property">class </em><tt class="descclassname">pygithub3.services.repos.</tt><tt class="descname">Repo</tt><big>(</big><em>**config</em><big>)</big><a class="headerlink" href="#pygithub3.services.repos.Repo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Consume <a class="reference external" href="http://developer.github.com/v3/repos">Repos API</a></p>
+<dl class="attribute">
+<dt id="Repo.collaborators">
+<tt class="descname">collaborators</tt><a class="headerlink" href="#Repo.collaborators" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="#collaborators-service"><em>Collaborators</em></a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Repo.commits">
+<tt class="descname">commits</tt><a class="headerlink" href="#Repo.commits" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="#commits-service"><em>Commits</em></a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Repo.downloads">
+<tt class="descname">downloads</tt><a class="headerlink" href="#Repo.downloads" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="#downloads-service"><em>Downloads</em></a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Repo.forks">
+<tt class="descname">forks</tt><a class="headerlink" href="#Repo.forks" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="#forks-service"><em>Forks</em></a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Repo.keys">
+<tt class="descname">keys</tt><a class="headerlink" href="#Repo.keys" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="#repokeys-service"><em>Keys</em></a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Repo.watchers">
+<tt class="descname">watchers</tt><a class="headerlink" href="#Repo.watchers" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="#watchers-service"><em>Watchers</em></a></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pygithub3.services.repos.Repo.create">
+<tt class="descname">create</tt><big>(</big><em>data</em>, <em>in_org=None</em><big>)</big><a class="headerlink" href="#pygithub3.services.repos.Repo.create" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new repository</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>data</strong> (<em>dict</em>) &#8211; Input. See <a class="reference external" href="http://developer.github.com/v3/repos">github repos doc</a></li>
+<li><strong>in_org</strong> (<em>str</em>) &#8211; Organization where create the repository (optional)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p>You must be authenticated</p>
+<p class="last">If you use <tt class="docutils literal"><span class="pre">in_org</span></tt> arg, the authenticated user must be a member
+of &lt;in_org&gt;</p>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">repo_service</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&#39;new_repo&#39;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s">&#39;desc&#39;</span><span class="p">))</span>
+<span class="n">repo_service</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&#39;new_repo_in_org&#39;</span><span class="p">,</span> <span class="n">team_id</span><span class="o">=</span><span class="mi">2300</span><span class="p">),</span>
+    <span class="n">in_org</span><span class="o">=</span><span class="s">&#39;myorganization&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pygithub3.services.repos.Repo.get">
+<tt class="descname">get</tt><big>(</big><em>user=None</em>, <em>repo=None</em><big>)</big><a class="headerlink" href="#pygithub3.services.repos.Repo.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a single repo</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>user</strong> (<em>str</em>) &#8211; Username</li>
+<li><strong>repo</strong> (<em>str</em>) &#8211; Repository</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Remember <a class="reference internal" href="#config-precedence"><em>Config precedence</em></a></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pygithub3.services.repos.Repo.list">
+<tt class="descname">list</tt><big>(</big><em>user=None</em>, <em>type='all'</em><big>)</big><a class="headerlink" href="#pygithub3.services.repos.Repo.list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get user&#8217;s repositories</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>user</strong> (<em>str</em>) &#8211; Username</li>
+<li><strong>type</strong> (<em>str</em>) &#8211; Filter by type (optional). See <a class="reference external" href="http://developer.github.com/v3/repos">github repos doc</a></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A <a class="reference internal" href="result.html"><em>Result</em></a></p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>If you call it without user and you are authenticated, get the
+authenticated user&#8217;s repositories</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">If you aren&#8217;t authenticated and call without user, it returns 403</p>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">repo_service</span><span class="o">.</span><span class="n">list</span><span class="p">(</span><span class="s">&#39;copitux&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s">&#39;owner&#39;</span><span class="p">)</span>
+<span class="n">repo_service</span><span class="o">.</span><span class="n">list</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s">&#39;private&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pygithub3.services.repos.Repo.list_branches">
+<tt class="descname">list_branches</tt><big>(</big><em>user=None</em>, <em>repo=None</em><big>)</big><a class="headerlink" href="#pygithub3.services.repos.Repo.list_branches" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get repository&#8217;s branches</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>user</strong> (<em>str</em>) &#8211; Username</li>
+<li><strong>repo</strong> (<em>str</em>) &#8211; Repository</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A <a class="reference internal" href="result.html"><em>Result</em></a></p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Remember <a class="reference internal" href="#config-precedence"><em>Config precedence</em></a></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pygithub3.services.repos.Repo.list_by_org">
+<tt class="descname">list_by_org</tt><big>(</big><em>org</em>, <em>type='all'</em><big>)</big><a class="headerlink" href="#pygithub3.services.repos.Repo.list_by_org" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get organization&#8217;s repositories</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>org</strong> (<em>str</em>) &#8211; Organization name</li>
+<li><strong>type</strong> (<em>str</em>) &#8211; Filter by type (optional). See <a class="reference external" href="http://developer.github.com/v3/repos">github repos doc</a></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A <a class="reference internal" href="result.html"><em>Result</em></a></p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">repo_service</span><span class="o">.</span><span class="n">list_by_org</span><span class="p">(</span><span class="s">&#39;myorganization&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s">&#39;member&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pygithub3.services.repos.Repo.list_contributors">
+<tt class="descname">list_contributors</tt><big>(</big><em>user=None</em>, <em>repo=None</em><big>)</big><a class="headerlink" href="#pygithub3.services.repos.Repo.list_contributors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get repository&#8217;s contributors</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>user</strong> (<em>str</em>) &#8211; Username</li>
+<li><strong>repo</strong> (<em>str</em>) &#8211; Repository</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A <a class="reference internal" href="result.html"><em>Result</em></a></p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Remember <a class="reference internal" href="#config-precedence"><em>Config precedence</em></a></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pygithub3.services.repos.Repo.list_contributors_with_anonymous">
+<tt class="descname">list_contributors_with_anonymous</tt><big>(</big><em>user=None</em>, <em>repo=None</em><big>)</big><a class="headerlink" href="#pygithub3.services.repos.Repo.list_contributors_with_anonymous" title="Permalink to this definition">¶</a></dt>
+<dd><p>Like <a class="reference internal" href="#pygithub3.services.repos.Repo.list_contributors" title="pygithub3.services.repos.Repo.list_contributors"><tt class="xref py py-attr docutils literal"><span class="pre">list_contributors</span></tt></a> plus
+anonymous</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pygithub3.services.repos.Repo.list_languages">
+<tt class="descname">list_languages</tt><big>(</big><em>user=None</em>, <em>repo=None</em><big>)</big><a class="headerlink" href="#pygithub3.services.repos.Repo.list_languages" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get repository&#8217;s languages</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>user</strong> (<em>str</em>) &#8211; Username</li>
+<li><strong>repo</strong> (<em>str</em>) &#8211; Repository</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A <a class="reference internal" href="result.html"><em>Result</em></a></p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Remember <a class="reference internal" href="#config-precedence"><em>Config precedence</em></a></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pygithub3.services.repos.Repo.list_tags">
+<tt class="descname">list_tags</tt><big>(</big><em>user=None</em>, <em>repo=None</em><big>)</big><a class="headerlink" href="#pygithub3.services.repos.Repo.list_tags" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get repository&#8217;s tags</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>user</strong> (<em>str</em>) &#8211; Username</li>
+<li><strong>repo</strong> (<em>str</em>) &#8211; Repository</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A <a class="reference internal" href="result.html"><em>Result</em></a></p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Remember <a class="reference internal" href="#config-precedence"><em>Config precedence</em></a></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pygithub3.services.repos.Repo.list_teams">
+<tt class="descname">list_teams</tt><big>(</big><em>user=None</em>, <em>repo=None</em><big>)</big><a class="headerlink" href="#pygithub3.services.repos.Repo.list_teams" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get repository&#8217;s teams</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>user</strong> (<em>str</em>) &#8211; Username</li>
+<li><strong>repo</strong> (<em>str</em>) &#8211; Repository</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A <a class="reference internal" href="result.html"><em>Result</em></a></p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Remember <a class="reference internal" href="#config-precedence"><em>Config precedence</em></a></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pygithub3.services.repos.Repo.update">
+<tt class="descname">update</tt><big>(</big><em>data</em>, <em>user=None</em>, <em>repo=None</em><big>)</big><a class="headerlink" href="#pygithub3.services.repos.Repo.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update a single repository</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>data</strong> (<em>dict</em>) &#8211; Input. See <a class="reference external" href="http://developer.github.com/v3/repos">github repos doc</a></li>
+<li><strong>user</strong> (<em>str</em>) &#8211; Username</li>
+<li><strong>repo</strong> (<em>str</em>) &#8211; Repository</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Remember <a class="reference internal" href="#config-precedence"><em>Config precedence</em></a></p>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">You must be authenticated</p>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">repo_service</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">has_issues</span><span class="o">=</span><span class="bp">True</span><span class="p">),</span> <span class="n">user</span><span class="o">=</span><span class="s">&#39;octocat&#39;</span><span class="p">,</span>
+    <span class="n">repo</span><span class="o">=</span><span class="s">&#39;oct_repo&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="collaborators">
+<span id="collaborators-service"></span><h2>Collaborators<a class="headerlink" href="#collaborators" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pygithub3.services.repos.Collaborators">
+<em class="property">class </em><tt class="descclassname">pygithub3.services.repos.</tt><tt class="descname">Collaborators</tt><big>(</big><em>**config</em><big>)</big><a class="headerlink" href="#pygithub3.services.repos.Collaborators" title="Permalink to this definition">¶</a></dt>
+<dd><p>Consume <a class="reference external" href="http://developer.github.com/v3/repos/collaborators">Repo Collaborators API</a></p>
+<dl class="method">
+<dt id="pygithub3.services.repos.Collaborators.add">
+<tt class="descname">add</tt><big>(</big><em>collaborator</em>, <em>user=None</em>, <em>repo=None</em><big>)</big><a class="headerlink" href="#pygithub3.services.repos.Collaborators.add" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add collaborator to a repository</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>collaborator</strong> (<em>str</em>) &#8211; Collaborator&#8217;s username</li>
+<li><strong>user</strong> (<em>str</em>) &#8211; Username</li>
+<li><strong>repo</strong> (<em>str</em>) &#8211; Repository</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Remember <a class="reference internal" href="#config-precedence"><em>Config precedence</em></a></p>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">You must be authenticated and have perms in repository</p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pygithub3.services.repos.Collaborators.delete">
+<tt class="descname">delete</tt><big>(</big><em>collaborator</em>, <em>user=None</em>, <em>repo=None</em><big>)</big><a class="headerlink" href="#pygithub3.services.repos.Collaborators.delete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove collaborator from repository</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>collaborator</strong> (<em>str</em>) &#8211; Collaborator&#8217;s username</li>
+<li><strong>user</strong> (<em>str</em>) &#8211; Username</li>
+<li><strong>repo</strong> (<em>str</em>) &#8211; Repository</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Remember <a class="reference internal" href="#config-precedence"><em>Config precedence</em></a></p>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">You must be authenticated and have perms in repository</p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pygithub3.services.repos.Collaborators.is_collaborator">
+<tt class="descname">is_collaborator</tt><big>(</big><em>collaborator</em>, <em>user=None</em>, <em>repo=None</em><big>)</big><a class="headerlink" href="#pygithub3.services.repos.Collaborators.is_collaborator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if a user is collaborator on repository</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>collaborator</strong> (<em>str</em>) &#8211; Collaborator&#8217;s username</li>
+<li><strong>user</strong> (<em>str</em>) &#8211; Username</li>
+<li><strong>repo</strong> (<em>str</em>) &#8211; Repository</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Remember <a class="reference internal" href="#config-precedence"><em>Config precedence</em></a></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pygithub3.services.repos.Collaborators.list">
+<tt class="descname">list</tt><big>(</big><em>user=None</em>, <em>repo=None</em><big>)</big><a class="headerlink" href="#pygithub3.services.repos.Collaborators.list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get repository&#8217;s collaborators</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>user</strong> (<em>str</em>) &#8211; Username</li>
+<li><strong>repo</strong> (<em>str</em>) &#8211; Repository</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A <a class="reference internal" href="result.html"><em>Result</em></a></p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Remember <a class="reference internal" href="#config-precedence"><em>Config precedence</em></a></p>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="commits">
+<span id="commits-service"></span><h2>Commits<a class="headerlink" href="#commits" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pygithub3.services.repos.Commits">
+<em class="property">class </em><tt class="descclassname">pygithub3.services.repos.</tt><tt class="descname">Commits</tt><big>(</big><em>**config</em><big>)</big><a class="headerlink" href="#pygithub3.services.repos.Commits" title="Permalink to this definition">¶</a></dt>
+<dd><p>Consume <a class="reference external" href="http://developer.github.com/v3/repos/commits">Commits API</a></p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This service support <a class="reference internal" href="services.html#mimetypes-section"><em>MimeTypes</em></a> configuration</p>
+</div>
+<dl class="method">
+<dt id="pygithub3.services.repos.Commits.compare">
+<tt class="descname">compare</tt><big>(</big><em>base</em>, <em>head</em>, <em>user=None</em>, <em>repo=None</em><big>)</big><a class="headerlink" href="#pygithub3.services.repos.Commits.compare" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compare two commits</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>base</strong> (<em>str</em>) &#8211; Base commit sha</li>
+<li><strong>head</strong> (<em>str</em>) &#8211; Head commit sha</li>
+<li><strong>user</strong> (<em>str</em>) &#8211; Username</li>
+<li><strong>repo</strong> (<em>str</em>) &#8211; Repository</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Remember <a class="reference internal" href="#config-precedence"><em>Config precedence</em></a></p>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">commits_service</span><span class="o">.</span><span class="n">compare</span><span class="p">(</span><span class="s">&#39;6dcb09&#39;</span><span class="p">,</span> <span class="s">&#39;master&#39;</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="s">&#39;octocat&#39;</span><span class="p">,</span>
+    <span class="n">repo</span><span class="o">=</span><span class="s">&#39;oct_repo&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pygithub3.services.repos.Commits.create_comment">
+<tt class="descname">create_comment</tt><big>(</big><em>data</em>, <em>sha</em>, <em>user=None</em>, <em>repo=None</em><big>)</big><a class="headerlink" href="#pygithub3.services.repos.Commits.create_comment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a commit comment</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>data</strong> (<em>dict</em>) &#8211; Input. See <a class="reference external" href="http://developer.github.com/v3/repos/commits">github commits doc</a></li>
+<li><strong>sha</strong> (<em>str</em>) &#8211; Commit&#8217;s sha</li>
+<li><strong>user</strong> (<em>str</em>) &#8211; Username</li>
+<li><strong>repo</strong> (<em>str</em>) &#8211; Repository</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Remember <a class="reference internal" href="#config-precedence"><em>Config precedence</em></a></p>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">You must be authenticated</p>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">&quot;body&quot;</span><span class="p">:</span> <span class="s">&quot;Nice change&quot;</span><span class="p">,</span>
+    <span class="s">&quot;commit_id&quot;</span><span class="p">:</span> <span class="s">&quot;6dcb09b5b57875f334f61aebed695e2e4193db5e&quot;</span><span class="p">,</span>
+    <span class="s">&quot;line&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="s">&quot;path&quot;</span><span class="p">:</span> <span class="s">&quot;file1.txt&quot;</span><span class="p">,</span>
+    <span class="s">&quot;position&quot;</span><span class="p">:</span> <span class="mi">4</span>
+<span class="p">}</span>
+<span class="n">commits_service</span><span class="o">.</span><span class="n">create_comment</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="s">&#39;6dcb09&#39;</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="s">&#39;octocat&#39;</span><span class="p">,</span>
+    <span class="n">repo</span><span class="o">=</span><span class="s">&#39;oct_repo&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pygithub3.services.repos.Commits.delete_comment">
+<tt class="descname">delete_comment</tt><big>(</big><em>cid</em>, <em>user=None</em>, <em>repo=None</em><big>)</big><a class="headerlink" href="#pygithub3.services.repos.Commits.delete_comment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete a single commit comment</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>cid</strong> (<em>int</em>) &#8211; Commit comment id</li>
+<li><strong>user</strong> (<em>str</em>) &#8211; Username</li>
+<li><strong>repo</strong> (<em>str</em>) &#8211; Repository</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Remember <a class="reference internal" href="#config-precedence"><em>Config precedence</em></a></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pygithub3.services.repos.Commits.get">
+<tt class="descname">get</tt><big>(</big><em>sha</em>, <em>user=None</em>, <em>repo=None</em><big>)</big><a class="headerlink" href="#pygithub3.services.repos.Commits.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a single commit</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>sha</strong> (<em>str</em>) &#8211; Commit&#8217;s sha</li>
+<li><strong>user</strong> (<em>str</em>) &#8211; Username</li>
+<li><strong>repo</strong> (<em>str</em>) &#8211; Repository</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Remember <a class="reference internal" href="#config-precedence"><em>Config precedence</em></a></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pygithub3.services.repos.Commits.get_comment">
+<tt class="descname">get_comment</tt><big>(</big><em>cid</em>, <em>user=None</em>, <em>repo=None</em><big>)</big><a class="headerlink" href="#pygithub3.services.repos.Commits.get_comment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a single commit comment</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>cid</strong> (<em>int</em>) &#8211; Commit comment id</li>
+<li><strong>user</strong> (<em>str</em>) &#8211; Username</li>
+<li><strong>repo</strong> (<em>str</em>) &#8211; Repository</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Remember <a class="reference internal" href="#config-precedence"><em>Config precedence</em></a></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pygithub3.services.repos.Commits.list">
+<tt class="descname">list</tt><big>(</big><em>user=None</em>, <em>repo=None</em>, <em>sha=None</em>, <em>path=None</em><big>)</big><a class="headerlink" href="#pygithub3.services.repos.Commits.list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get repository&#8217;s commits</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>user</strong> (<em>str</em>) &#8211; Username</li>
+<li><strong>repo</strong> (<em>str</em>) &#8211; Repository</li>
+<li><strong>sha</strong> (<em>str</em>) &#8211; Sha or branch to start listing commits from</li>
+<li><strong>path</strong> (<em>str</em>) &#8211; Only commits containing this file path will be returned</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A <a class="reference internal" href="result.html"><em>Result</em></a></p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Remember <a class="reference internal" href="#config-precedence"><em>Config precedence</em></a></p>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Usually a repository has thousand of commits, so be careful when
+consume the result. You should filter with <tt class="docutils literal"><span class="pre">sha</span></tt> or directly
+clone the repository</p>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">commits_service</span><span class="o">.</span><span class="n">list</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="s">&#39;octocat&#39;</span><span class="p">,</span> <span class="n">repo</span><span class="o">=</span><span class="s">&#39;oct_repo&#39;</span><span class="p">)</span>
+<span class="n">commits_service</span><span class="o">.</span><span class="n">list</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="s">&#39;octocat&#39;</span><span class="p">,</span> <span class="n">repo</span><span class="o">=</span><span class="s">&#39;oct_repo&#39;</span><span class="p">,</span> <span class="n">sha</span><span class="o">=</span><span class="s">&#39;dev&#39;</span><span class="p">)</span>
+<span class="n">commits_service</span><span class="o">.</span><span class="n">list</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="s">&#39;django&#39;</span><span class="p">,</span> <span class="n">repo</span><span class="o">=</span><span class="s">&#39;django&#39;</span><span class="p">,</span> <span class="n">sha</span><span class="o">=</span><span class="s">&#39;master&#39;</span><span class="p">,</span>
+    <span class="n">path</span><span class="o">=</span><span class="s">&#39;django/db/utils.py&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pygithub3.services.repos.Commits.list_comments">
+<tt class="descname">list_comments</tt><big>(</big><em>sha=None</em>, <em>user=None</em>, <em>repo=None</em><big>)</big><a class="headerlink" href="#pygithub3.services.repos.Commits.list_comments" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get commit&#8217;s comments</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>sha</strong> (<em>str</em>) &#8211; Commit&#8217;s sha</li>
+<li><strong>user</strong> (<em>str</em>) &#8211; Username</li>
+<li><strong>repo</strong> (<em>str</em>) &#8211; Repository</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A <a class="reference internal" href="result.html"><em>Result</em></a></p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Remember <a class="reference internal" href="#config-precedence"><em>Config precedence</em></a></p>
+</div>
+<p>If you call it without <tt class="docutils literal"><span class="pre">sha</span></tt>, get all commit&#8217;s comments of a
+repository</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">commits_service</span><span class="o">.</span><span class="n">list_comments</span><span class="p">(</span><span class="s">&#39;6dcb09&#39;</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="s">&#39;octocat&#39;</span><span class="p">,</span>
+    <span class="n">repo</span><span class="o">=</span><span class="s">&#39;oct_repo&#39;</span><span class="p">)</span>
+<span class="n">commits_service</span><span class="o">.</span><span class="n">list_comments</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="s">&#39;octocat&#39;</span><span class="p">,</span> <span class="n">repo</span><span class="o">=</span><span class="s">&#39;oct_repo&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pygithub3.services.repos.Commits.update_comment">
+<tt class="descname">update_comment</tt><big>(</big><em>data</em>, <em>cid</em>, <em>user=None</em>, <em>repo=None</em><big>)</big><a class="headerlink" href="#pygithub3.services.repos.Commits.update_comment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update a single commit comment</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>data</strong> (<em>dict</em>) &#8211; Input. See <a class="reference external" href="http://developer.github.com/v3/repos/commits">github commits doc</a></li>
+<li><strong>cid</strong> (<em>int</em>) &#8211; Commit comment id</li>
+<li><strong>user</strong> (<em>str</em>) &#8211; Username</li>
+<li><strong>repo</strong> (<em>str</em>) &#8211; Repository</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Remember <a class="reference internal" href="#config-precedence"><em>Config precedence</em></a></p>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">You must be authenticated</p>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">commits_service</span><span class="o">.</span><span class="n">update_comment</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">body</span><span class="o">=</span><span class="s">&#39;nice change&#39;</span><span class="p">),</span> <span class="mi">42</span><span class="p">,</span>
+    <span class="n">user</span><span class="o">=</span><span class="s">&#39;octocat&#39;</span><span class="p">,</span> <span class="n">repo</span><span class="o">=</span><span class="s">&#39;oct_repo&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="downloads">
+<span id="downloads-service"></span><h2>Downloads<a class="headerlink" href="#downloads" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pygithub3.services.repos.Downloads">
+<em class="property">class </em><tt class="descclassname">pygithub3.services.repos.</tt><tt class="descname">Downloads</tt><big>(</big><em>**config</em><big>)</big><a class="headerlink" href="#pygithub3.services.repos.Downloads" title="Permalink to this definition">¶</a></dt>
+<dd><p>Consume <a class="reference external" href="http://developer.github.com/v3/repos/downloads">Downloads API</a></p>
+<dl class="method">
+<dt id="pygithub3.services.repos.Downloads.create">
+<tt class="descname">create</tt><big>(</big><em>data</em>, <em>user=None</em>, <em>repo=None</em><big>)</big><a class="headerlink" href="#pygithub3.services.repos.Downloads.create" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new download</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>data</strong> (<em>dict</em>) &#8211; Input. See <a class="reference external" href="http://developer.github.com/v3/repos/downloads">github downloads doc</a></li>
+<li><strong>user</strong> (<em>str</em>) &#8211; Username</li>
+<li><strong>repo</strong> (<em>str</em>) &#8211; Repository</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Remember <a class="reference internal" href="#config-precedence"><em>Config precedence</em></a></p>
+</div>
+<p>It is a two step process. After you create the download, you must
+call the <tt class="docutils literal"><span class="pre">upload</span></tt> function of <tt class="docutils literal"><span class="pre">Download</span></tt> resource with
+<tt class="docutils literal"><span class="pre">file_path</span></tt></p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">In <cite>alpha</cite> state</p>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># Step 1</span>
+<span class="n">download</span> <span class="o">=</span> <span class="n">downloads_service</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+    <span class="nb">dict</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&#39;new_download&#39;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">1130</span><span class="p">),</span>
+    <span class="n">user</span><span class="o">=</span><span class="s">&#39;octocat&#39;</span><span class="p">,</span> <span class="n">repo</span><span class="o">=</span><span class="s">&#39;oct_repo&#39;</span><span class="p">)</span>
+
+<span class="c"># Step 2</span>
+<span class="n">download</span><span class="o">.</span><span class="n">upload</span><span class="p">(</span><span class="s">&#39;/home/user/file.ext&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pygithub3.services.repos.Downloads.delete">
+<tt class="descname">delete</tt><big>(</big><em>id</em>, <em>user=None</em>, <em>repo=None</em><big>)</big><a class="headerlink" href="#pygithub3.services.repos.Downloads.delete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete a download</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>id</strong> (<em>int</em>) &#8211; Download id</li>
+<li><strong>user</strong> (<em>str</em>) &#8211; Username</li>
+<li><strong>repo</strong> (<em>str</em>) &#8211; Repository</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Remember <a class="reference internal" href="#config-precedence"><em>Config precedence</em></a></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pygithub3.services.repos.Downloads.get">
+<tt class="descname">get</tt><big>(</big><em>id</em>, <em>user=None</em>, <em>repo=None</em><big>)</big><a class="headerlink" href="#pygithub3.services.repos.Downloads.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a single download</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>id</strong> (<em>int</em>) &#8211; Download id</li>
+<li><strong>user</strong> (<em>str</em>) &#8211; Username</li>
+<li><strong>repo</strong> (<em>str</em>) &#8211; Repository</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Remember <a class="reference internal" href="#config-precedence"><em>Config precedence</em></a></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pygithub3.services.repos.Downloads.list">
+<tt class="descname">list</tt><big>(</big><em>user=None</em>, <em>repo=None</em><big>)</big><a class="headerlink" href="#pygithub3.services.repos.Downloads.list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get repository&#8217;s downloads</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>user</strong> (<em>str</em>) &#8211; Username</li>
+<li><strong>repo</strong> (<em>str</em>) &#8211; Repository</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A <a class="reference internal" href="result.html"><em>Result</em></a></p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Remember <a class="reference internal" href="#config-precedence"><em>Config precedence</em></a></p>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="forks">
+<span id="forks-service"></span><h2>Forks<a class="headerlink" href="#forks" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pygithub3.services.repos.Forks">
+<em class="property">class </em><tt class="descclassname">pygithub3.services.repos.</tt><tt class="descname">Forks</tt><big>(</big><em>**config</em><big>)</big><a class="headerlink" href="#pygithub3.services.repos.Forks" title="Permalink to this definition">¶</a></dt>
+<dd><p>Consume <a class="reference external" href="http://developer.github.com/v3/repos/forks">Forks API</a></p>
+<dl class="method">
+<dt id="pygithub3.services.repos.Forks.create">
+<tt class="descname">create</tt><big>(</big><em>user=None</em>, <em>repo=None</em>, <em>org=None</em><big>)</big><a class="headerlink" href="#pygithub3.services.repos.Forks.create" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fork a repository</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>user</strong> (<em>str</em>) &#8211; Username</li>
+<li><strong>repo</strong> (<em>str</em>) &#8211; Repository</li>
+<li><strong>org</strong> (<em>str</em>) &#8211; Organization name (optional)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Remember <a class="reference internal" href="#config-precedence"><em>Config precedence</em></a></p>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">You must be authenticated</p>
+</div>
+<p>If you call it with <tt class="docutils literal"><span class="pre">org</span></tt>, the repository will be forked into this
+organization.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">forks_service</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="s">&#39;octocat&#39;</span><span class="p">,</span> <span class="n">repo</span><span class="o">=</span><span class="s">&#39;oct_repo&#39;</span><span class="p">)</span>
+<span class="n">forks_service</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="s">&#39;octocat&#39;</span><span class="p">,</span> <span class="n">repo</span><span class="o">=</span><span class="s">&#39;oct_repo&#39;</span><span class="p">,</span>
+    <span class="n">org</span><span class="o">=</span><span class="s">&#39;myorganization&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pygithub3.services.repos.Forks.list">
+<tt class="descname">list</tt><big>(</big><em>user=None</em>, <em>repo=None</em>, <em>sort='newest'</em><big>)</big><a class="headerlink" href="#pygithub3.services.repos.Forks.list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get repository&#8217;s forks</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>user</strong> (<em>str</em>) &#8211; Username</li>
+<li><strong>repo</strong> (<em>str</em>) &#8211; Repository</li>
+<li><strong>sort</strong> (<em>str</em>) &#8211; Order resources (optional). See <a class="reference external" href="http://developer.github.com/v3/repos/forks">github forks doc</a></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A <a class="reference internal" href="result.html"><em>Result</em></a></p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Remember <a class="reference internal" href="#config-precedence"><em>Config precedence</em></a></p>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">forks_service</span><span class="o">.</span><span class="n">list</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="s">&#39;octocat&#39;</span><span class="p">,</span> <span class="n">repo</span><span class="o">=</span><span class="s">&#39;oct_repo&#39;</span><span class="p">,</span> <span class="n">sort</span><span class="o">=</span><span class="s">&#39;oldest&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="keys">
+<span id="repokeys-service"></span><h2>Keys<a class="headerlink" href="#keys" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pygithub3.services.repos.Keys">
+<em class="property">class </em><tt class="descclassname">pygithub3.services.repos.</tt><tt class="descname">Keys</tt><big>(</big><em>**config</em><big>)</big><a class="headerlink" href="#pygithub3.services.repos.Keys" title="Permalink to this definition">¶</a></dt>
+<dd><p>Consume <a class="reference external" href="http://developer.github.com/v3/repos/keys">Deploy keys API</a></p>
+<dl class="method">
+<dt id="pygithub3.services.repos.Keys.create">
+<tt class="descname">create</tt><big>(</big><em>data</em>, <em>user=None</em>, <em>repo=None</em><big>)</big><a class="headerlink" href="#pygithub3.services.repos.Keys.create" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a repository key</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>data</strong> (<em>dict</em>) &#8211; Input. See <a class="reference external" href="http://developer.github.com/v3/repos/keys">github keys doc</a></li>
+<li><strong>user</strong> (<em>str</em>) &#8211; Username</li>
+<li><strong>repo</strong> (<em>str</em>) &#8211; Repository</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Remember <a class="reference internal" href="#config-precedence"><em>Config precedence</em></a></p>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">You must be authenticated and have perms in the repository</p>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">keys_service</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s">&#39;new key&#39;</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="s">&#39;ssh-rsa AAA...&#39;</span><span class="p">),</span>
+    <span class="n">user</span><span class="o">=</span><span class="s">&#39;octocat&#39;</span><span class="p">,</span> <span class="n">repo</span><span class="o">=</span><span class="s">&#39;oct_repo&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pygithub3.services.repos.Keys.delete">
+<tt class="descname">delete</tt><big>(</big><em>id</em>, <em>user=None</em>, <em>repo=None</em><big>)</big><a class="headerlink" href="#pygithub3.services.repos.Keys.delete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete a repository key</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>id</strong> (<em>int</em>) &#8211; Repository key id</li>
+<li><strong>user</strong> (<em>str</em>) &#8211; Username</li>
+<li><strong>repo</strong> (<em>str</em>) &#8211; Repository</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Remember <a class="reference internal" href="#config-precedence"><em>Config precedence</em></a></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pygithub3.services.repos.Keys.get">
+<tt class="descname">get</tt><big>(</big><em>id</em>, <em>user=None</em>, <em>repo=None</em><big>)</big><a class="headerlink" href="#pygithub3.services.repos.Keys.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a single repository key</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>id</strong> (<em>int</em>) &#8211; Repository key id</li>
+<li><strong>user</strong> (<em>str</em>) &#8211; Username</li>
+<li><strong>repo</strong> (<em>str</em>) &#8211; Repository</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Remember <a class="reference internal" href="#config-precedence"><em>Config precedence</em></a></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pygithub3.services.repos.Keys.list">
+<tt class="descname">list</tt><big>(</big><em>user=None</em>, <em>repo=None</em><big>)</big><a class="headerlink" href="#pygithub3.services.repos.Keys.list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get repository&#8217;s keys</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>user</strong> (<em>str</em>) &#8211; Username</li>
+<li><strong>repo</strong> (<em>str</em>) &#8211; Repository</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A <a class="reference internal" href="result.html"><em>Result</em></a></p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Remember <a class="reference internal" href="#config-precedence"><em>Config precedence</em></a></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pygithub3.services.repos.Keys.update">
+<tt class="descname">update</tt><big>(</big><em>id</em>, <em>data</em>, <em>user=None</em>, <em>repo=None</em><big>)</big><a class="headerlink" href="#pygithub3.services.repos.Keys.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update a repository key</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>id</strong> (<em>int</em>) &#8211; Repository key id</li>
+<li><strong>data</strong> (<em>dict</em>) &#8211; Input. See <a class="reference external" href="http://developer.github.com/v3/repos/keys">github keys doc</a></li>
+<li><strong>user</strong> (<em>str</em>) &#8211; Username</li>
+<li><strong>repo</strong> (<em>str</em>) &#8211; Repository</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Remember <a class="reference internal" href="#config-precedence"><em>Config precedence</em></a></p>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">You must be authenticated and have perms in the repository</p>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">keys_service</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="mi">42</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s">&#39;new title&#39;</span><span class="p">),</span>
+    <span class="n">user</span><span class="o">=</span><span class="s">&#39;octocat&#39;</span><span class="p">,</span> <span class="n">repo</span><span class="o">=</span><span class="s">&#39;oct_repo&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="watchers">
+<span id="watchers-service"></span><h2>Watchers<a class="headerlink" href="#watchers" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pygithub3.services.repos.Watchers">
+<em class="property">class </em><tt class="descclassname">pygithub3.services.repos.</tt><tt class="descname">Watchers</tt><big>(</big><em>**config</em><big>)</big><a class="headerlink" href="#pygithub3.services.repos.Watchers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Consume <a class="reference external" href="http://developer.github.com/v3/repos/watching">Watching API</a></p>
+<dl class="method">
+<dt id="pygithub3.services.repos.Watchers.is_watching">
+<tt class="descname">is_watching</tt><big>(</big><em>user=None</em>, <em>repo=None</em><big>)</big><a class="headerlink" href="#pygithub3.services.repos.Watchers.is_watching" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if authenticated user is watching a repository</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>user</strong> (<em>str</em>) &#8211; Username</li>
+<li><strong>repo</strong> (<em>str</em>) &#8211; Repository</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Remember <a class="reference internal" href="#config-precedence"><em>Config precedence</em></a></p>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">You must be authenticated</p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pygithub3.services.repos.Watchers.list">
+<tt class="descname">list</tt><big>(</big><em>user=None</em>, <em>repo=None</em><big>)</big><a class="headerlink" href="#pygithub3.services.repos.Watchers.list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get repository&#8217;s watchers</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>user</strong> (<em>str</em>) &#8211; Username</li>
+<li><strong>repo</strong> (<em>str</em>) &#8211; Repository</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A <a class="reference internal" href="result.html"><em>Result</em></a></p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Remember <a class="reference internal" href="#config-precedence"><em>Config precedence</em></a></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pygithub3.services.repos.Watchers.list_repos">
+<tt class="descname">list_repos</tt><big>(</big><em>user=None</em><big>)</big><a class="headerlink" href="#pygithub3.services.repos.Watchers.list_repos" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get repositories being watched by a user</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>user</strong> (<em>str</em>) &#8211; Username</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A <a class="reference internal" href="result.html"><em>Result</em></a></td>
+</tr>
+</tbody>
+</table>
+<p>If you call it without user and you are authenticated, get the
+repositories being watched by the authenticated user.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">If you aren&#8217;t authenticated and call without user, it returns 403</p>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">watchers_service</span><span class="o">.</span><span class="n">list_repos</span><span class="p">(</span><span class="s">&#39;copitux&#39;</span><span class="p">)</span>
+<span class="n">watchers_service</span><span class="o">.</span><span class="n">list_repos</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pygithub3.services.repos.Watchers.unwatch">
+<tt class="descname">unwatch</tt><big>(</big><em>user=None</em>, <em>repo=None</em><big>)</big><a class="headerlink" href="#pygithub3.services.repos.Watchers.unwatch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stop watching a repository</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>user</strong> (<em>str</em>) &#8211; Username</li>
+<li><strong>repo</strong> (<em>str</em>) &#8211; Repository</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Remember <a class="reference internal" href="#config-precedence"><em>Config precedence</em></a></p>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">You must be authenticated</p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pygithub3.services.repos.Watchers.watch">
+<tt class="descname">watch</tt><big>(</big><em>user=None</em>, <em>repo=None</em><big>)</big><a class="headerlink" href="#pygithub3.services.repos.Watchers.watch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Watch a repository</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>user</strong> (<em>str</em>) &#8211; Username</li>
+<li><strong>repo</strong> (<em>str</em>) &#8211; Repository</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Remember <a class="reference internal" href="#config-precedence"><em>Config precedence</em></a></p>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">You must be authenticated</p>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="hooks">
+<span id="hooks-service"></span><h2>Hooks<a class="headerlink" href="#hooks" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pygithub3.services.repos.Hooks">
+<em class="property">class </em><tt class="descclassname">pygithub3.services.repos.</tt><tt class="descname">Hooks</tt><big>(</big><em>**config</em><big>)</big><a class="headerlink" href="#pygithub3.services.repos.Hooks" title="Permalink to this definition">¶</a></dt>
+<dd><p>Consume <a class="reference external" href="http://developer.github.com/v3/repos/hooks">Hooks API</a></p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">You must be authenticated and have repository&#8217;s admin-permission</p>
+</div>
+<dl class="method">
+<dt id="pygithub3.services.repos.Hooks.create">
+<tt class="descname">create</tt><big>(</big><em>data</em>, <em>user=None</em>, <em>repo=None</em><big>)</big><a class="headerlink" href="#pygithub3.services.repos.Hooks.create" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a hook</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>data</strong> (<em>dict</em>) &#8211; Input. See <a class="reference external" href="http://developer.github.com/v3/repos/hooks">github hooks doc</a></li>
+<li><strong>user</strong> (<em>str</em>) &#8211; Username</li>
+<li><strong>repo</strong> (<em>str</em>) &#8211; Repository</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Remember <a class="reference internal" href="#config-precedence"><em>Config precedence</em></a></p>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">&quot;name&quot;</span><span class="p">:</span> <span class="s">&quot;acunote&quot;</span><span class="p">,</span>
+    <span class="s">&quot;active&quot;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+    <span class="s">&quot;config&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&#39;token&#39;</span><span class="p">:</span> <span class="s">&#39;AAA...&#39;</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="s">&quot;events&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;push&#39;</span><span class="p">,</span> <span class="s">&#39;issues&#39;</span><span class="p">],</span>
+<span class="p">}</span>
+<span class="n">hooks_service</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="s">&#39;octocat&#39;</span><span class="p">,</span> <span class="n">repo</span><span class="o">=</span><span class="s">&#39;oct_repo&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pygithub3.services.repos.Hooks.delete">
+<tt class="descname">delete</tt><big>(</big><em>hook_id</em>, <em>user=None</em>, <em>repo=None</em><big>)</big><a class="headerlink" href="#pygithub3.services.repos.Hooks.delete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete a single hook</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>hook_id</strong> (<em>int</em>) &#8211; Hook id</li>
+<li><strong>user</strong> (<em>str</em>) &#8211; Username</li>
+<li><strong>repo</strong> (<em>str</em>) &#8211; Repository</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Remember <a class="reference internal" href="#config-precedence"><em>Config precedence</em></a></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pygithub3.services.repos.Hooks.get">
+<tt class="descname">get</tt><big>(</big><em>hook_id</em>, <em>user=None</em>, <em>repo=None</em><big>)</big><a class="headerlink" href="#pygithub3.services.repos.Hooks.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a single hook</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>hook_id</strong> (<em>int</em>) &#8211; Hook id</li>
+<li><strong>user</strong> (<em>str</em>) &#8211; Username</li>
+<li><strong>repo</strong> (<em>str</em>) &#8211; Repository</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Remember <a class="reference internal" href="#config-precedence"><em>Config precedence</em></a></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pygithub3.services.repos.Hooks.list">
+<tt class="descname">list</tt><big>(</big><em>user=None</em>, <em>repo=None</em><big>)</big><a class="headerlink" href="#pygithub3.services.repos.Hooks.list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get repository&#8217;s hooks</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>user</strong> (<em>str</em>) &#8211; Username</li>
+<li><strong>repo</strong> (<em>str</em>) &#8211; Repository</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A <a class="reference internal" href="result.html"><em>Result</em></a></p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Remember <a class="reference internal" href="#config-precedence"><em>Config precedence</em></a></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pygithub3.services.repos.Hooks.test">
+<tt class="descname">test</tt><big>(</big><em>hook_id</em>, <em>user=None</em>, <em>repo=None</em><big>)</big><a class="headerlink" href="#pygithub3.services.repos.Hooks.test" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test a hook</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>user</strong> (<em>str</em>) &#8211; Username</li>
+<li><strong>repo</strong> (<em>str</em>) &#8211; Repository</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Remember <a class="reference internal" href="#config-precedence"><em>Config precedence</em></a></p>
+</div>
+<p>This will trigger the hook with the latest push to the current
+repository.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pygithub3.services.repos.Hooks.update">
+<tt class="descname">update</tt><big>(</big><em>hook_id</em>, <em>data</em>, <em>user=None</em>, <em>repo=None</em><big>)</big><a class="headerlink" href="#pygithub3.services.repos.Hooks.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update a single hook</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>hook_id</strong> (<em>int</em>) &#8211; Hook id</li>
+<li><strong>data</strong> (<em>dict</em>) &#8211; Input. See <a class="reference external" href="http://developer.github.com/v3/repos/hooks">github hooks doc</a></li>
+<li><strong>user</strong> (<em>str</em>) &#8211; Username</li>
+<li><strong>repo</strong> (<em>str</em>) &#8211; Repository</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Remember <a class="reference internal" href="#config-precedence"><em>Config precedence</em></a></p>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">hooks_service</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="mi">42</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">active</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span> <span class="n">user</span><span class="o">=</span><span class="s">&#39;octocat&#39;</span><span class="p">,</span>
+    <span class="n">repo</span><span class="o">=</span><span class="s">&#39;oct_repo&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Repos services</a><ul>
+<li><a class="reference internal" href="#config-precedence">Config precedence</a></li>
+<li><a class="reference internal" href="#repo">Repo</a></li>
+<li><a class="reference internal" href="#collaborators">Collaborators</a></li>
+<li><a class="reference internal" href="#commits">Commits</a></li>
+<li><a class="reference internal" href="#downloads">Downloads</a></li>
+<li><a class="reference internal" href="#forks">Forks</a></li>
+<li><a class="reference internal" href="#keys">Keys</a></li>
+<li><a class="reference internal" href="#watchers">Watchers</a></li>
+<li><a class="reference internal" href="#hooks">Hooks</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="users.html"
+                        title="previous chapter">Users services</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="gists.html"
+                        title="next chapter">Gists services</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/repos.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="gists.html" title="Gists services"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="users.html" title="Users services"
+             >previous</a> |</li>
+        <li><a href="index.html">pygithub3 0.3 documentation</a> &raquo;</li>
+          <li><a href="services.html" >Services</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012, David Medina.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,171 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Documentation Overview &mdash; pygithub3 0.3 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.3',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="pygithub3 0.3 documentation" href="#" />
+    <link rel="next" title="Installation" href="installation.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="installation.html" title="Installation"
+             accesskey="N">next</a> |</li>
+        <li><a href="#">pygithub3 0.3 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="documentation-overview">
+<h1>Documentation Overview<a class="headerlink" href="#documentation-overview" title="Permalink to this headline">¶</a></h1>
+<p><strong>pygithub3</strong> is a Github APIv3 python wrapper.</p>
+<p>You can consume the API with several <a class="reference internal" href="services.html"><em>Services</em></a> (users, repos...) like
+you see in <a class="reference external" href="http://developer.github.com">Github API v3 documentation</a>.</p>
+<p>When you do an API request, <strong>pygithub3</strong> map the result into <a class="reference internal" href="resources.html"><em>Resources</em></a>
+which can do its own related requests in future releases.</p>
+<div class="section" id="fast-sample">
+<h2>Fast sample<a class="headerlink" href="#fast-sample" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">pygithub3</span> <span class="kn">import</span> <span class="n">Github</span>
+
+<span class="n">gh</span> <span class="o">=</span> <span class="n">Github</span><span class="p">(</span><span class="n">login</span><span class="o">=</span><span class="s">&#39;octocat&#39;</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s">&#39;password&#39;</span><span class="p">)</span>
+
+<span class="n">octocat</span> <span class="o">=</span> <span class="n">gh</span><span class="o">.</span><span class="n">users</span><span class="o">.</span><span class="n">get</span><span class="p">()</span> <span class="c"># Auth required</span>
+<span class="n">copitux</span> <span class="o">=</span> <span class="n">gh</span><span class="o">.</span><span class="n">users</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;copitux&#39;</span><span class="p">)</span>
+<span class="c"># copitux = &lt;User (copitux)&gt;</span>
+
+<span class="n">octocat_followers</span> <span class="o">=</span> <span class="n">gh</span><span class="o">.</span><span class="n">users</span><span class="o">.</span><span class="n">followers</span><span class="o">.</span><span class="n">list</span><span class="p">()</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+<span class="n">copitux_followers</span> <span class="o">=</span> <span class="n">gh</span><span class="o">.</span><span class="n">users</span><span class="o">.</span><span class="n">followers</span><span class="o">.</span><span class="n">list</span><span class="p">(</span><span class="s">&#39;copitux&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+<span class="c"># copitux_followers = [&lt;User (ahmontero)&gt;, &lt;User (alazaro)&gt;, ...]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="others">
+<h2>Others<a class="headerlink" href="#others" title="Permalink to this headline">¶</a></h2>
+<p>You must apologize my English level. I&#8217;m trying to do my best</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#dependencies">Dependencies</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#required">Required</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#optional">Optional</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="github.html">Github</a></li>
+<li class="toctree-l1"><a class="reference internal" href="services.html">Services</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="services.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="services.html#config-each-service">Config each service</a></li>
+<li class="toctree-l2"><a class="reference internal" href="services.html#mimetypes">MimeTypes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="services.html#list-of-services">List of services</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="users.html">Users services</a></li>
+<li class="toctree-l3"><a class="reference internal" href="repos.html">Repos services</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gists.html">Gists services</a></li>
+<li class="toctree-l3"><a class="reference internal" href="git_data.html">Git Data services</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pull_requests.html">Pull Requests service</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="result.html">Result</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="result.html#smart-result">Smart Result</a></li>
+<li class="toctree-l2"><a class="reference internal" href="result.html#normal-result">Normal Result</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="resources.html">Resources</a></li>
+</ul>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="#">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Documentation Overview</a><ul>
+<li><a class="reference internal" href="#fast-sample">Fast sample</a></li>
+<li><a class="reference internal" href="#others">Others</a><ul>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Next topic</h4>
+  <p class="topless"><a href="installation.html"
+                        title="next chapter">Installation</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/index.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="installation.html" title="Installation"
+             >next</a> |</li>
+        <li><a href="#">pygithub3 0.3 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012, David Medina.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

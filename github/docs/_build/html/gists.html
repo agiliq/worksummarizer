@@ -1,0 +1,468 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Gists services &mdash; pygithub3 0.3 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.3',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="pygithub3 0.3 documentation" href="index.html" />
+    <link rel="up" title="Services" href="services.html" />
+    <link rel="next" title="Git Data services" href="git_data.html" />
+    <link rel="prev" title="Repos services" href="repos.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="git_data.html" title="Git Data services"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="repos.html" title="Repos services"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">pygithub3 0.3 documentation</a> &raquo;</li>
+          <li><a href="services.html" accesskey="U">Services</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="gists-services">
+<span id="gists-service"></span><h1>Gists services<a class="headerlink" href="#gists-services" title="Permalink to this headline">¶</a></h1>
+<p><strong>Fast sample</strong>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">pygithub3</span> <span class="kn">import</span> <span class="n">Github</span>
+
+<span class="n">auth</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">login</span><span class="o">=</span><span class="s">&#39;octocat&#39;</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s">&#39;pass&#39;</span><span class="p">)</span>
+<span class="n">gh</span> <span class="o">=</span> <span class="n">Github</span><span class="p">(</span><span class="o">**</span><span class="n">auth</span><span class="p">)</span>
+
+<span class="n">octocat_gists</span> <span class="o">=</span> <span class="n">gh</span><span class="o">.</span><span class="n">gists</span><span class="o">.</span><span class="n">list</span><span class="p">()</span>
+<span class="n">the_first_gist</span> <span class="o">=</span> <span class="n">gh</span><span class="o">.</span><span class="n">gists</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">the_first_gist_comments</span> <span class="o">=</span> <span class="n">gh</span><span class="o">.</span><span class="n">gists</span><span class="o">.</span><span class="n">comments</span><span class="o">.</span><span class="n">list</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="section" id="gist">
+<h2>Gist<a class="headerlink" href="#gist" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pygithub3.services.gists.Gist">
+<em class="property">class </em><tt class="descclassname">pygithub3.services.gists.</tt><tt class="descname">Gist</tt><big>(</big><em>**config</em><big>)</big><a class="headerlink" href="#pygithub3.services.gists.Gist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Consume <a class="reference external" href="http://developer.github.com/v3/gists">Gists API</a></p>
+<dl class="attribute">
+<dt id="Gist.comments">
+<tt class="descname">comments</tt><a class="headerlink" href="#Gist.comments" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="#comments-service"><em>Comments</em></a></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pygithub3.services.gists.Gist.create">
+<tt class="descname">create</tt><big>(</big><em>data</em><big>)</big><a class="headerlink" href="#pygithub3.services.gists.Gist.create" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a gist</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>data</strong> (<em>dict</em>) &#8211; Input. See <a class="reference external" href="http://developer.github.com/v3/gists">github gists doc</a></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">gist_service</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s">&#39;some gist&#39;</span><span class="p">,</span> <span class="n">public</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+    <span class="n">files</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;xample.py&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;content&#39;</span><span class="p">:</span> <span class="s">&#39;import code&#39;</span><span class="p">}}))</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pygithub3.services.gists.Gist.delete">
+<tt class="descname">delete</tt><big>(</big><em>id</em><big>)</big><a class="headerlink" href="#pygithub3.services.gists.Gist.delete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete a gist</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>id</strong> (<em>int</em>) &#8211; Gist id</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">You must be authenticated</p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pygithub3.services.gists.Gist.fork">
+<tt class="descname">fork</tt><big>(</big><em>id</em><big>)</big><a class="headerlink" href="#pygithub3.services.gists.Gist.fork" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fork a gist</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>id</strong> (<em>int</em>) &#8211; Gist id</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">You must be authenticated</p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pygithub3.services.gists.Gist.get">
+<tt class="descname">get</tt><big>(</big><em>id</em><big>)</big><a class="headerlink" href="#pygithub3.services.gists.Gist.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a single gist</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>id</strong> (<em>int</em>) &#8211; Gist id</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pygithub3.services.gists.Gist.is_starred">
+<tt class="descname">is_starred</tt><big>(</big><em>id</em><big>)</big><a class="headerlink" href="#pygithub3.services.gists.Gist.is_starred" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if a gist is starred</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>id</strong> (<em>int</em>) &#8211; Gist id</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">You must be authenticated</p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pygithub3.services.gists.Gist.list">
+<tt class="descname">list</tt><big>(</big><em>user=None</em><big>)</big><a class="headerlink" href="#pygithub3.services.gists.Gist.list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get user&#8217;s gists</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>user</strong> (<em>str</em>) &#8211; Username</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A <a class="reference internal" href="result.html"><em>Result</em></a></td>
+</tr>
+</tbody>
+</table>
+<p>If you call it without user and you are authenticated, get the
+authenticated user&#8217;s gists. but if you aren&#8217;t authenticated get the
+public gists</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">gist_service</span><span class="o">.</span><span class="n">list</span><span class="p">(</span><span class="s">&#39;copitux&#39;</span><span class="p">)</span>
+<span class="n">gist_service</span><span class="o">.</span><span class="n">list</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pygithub3.services.gists.Gist.public">
+<tt class="descname">public</tt><big>(</big><big>)</big><a class="headerlink" href="#pygithub3.services.gists.Gist.public" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get public gists</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A <a class="reference internal" href="result.html"><em>Result</em></a></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Be careful iterating the result</p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pygithub3.services.gists.Gist.star">
+<tt class="descname">star</tt><big>(</big><em>id</em><big>)</big><a class="headerlink" href="#pygithub3.services.gists.Gist.star" title="Permalink to this definition">¶</a></dt>
+<dd><p>Star a gist</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>id</strong> (<em>int</em>) &#8211; Gist id</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">You must be authenticated</p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pygithub3.services.gists.Gist.starred">
+<tt class="descname">starred</tt><big>(</big><big>)</big><a class="headerlink" href="#pygithub3.services.gists.Gist.starred" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get authenticated user&#8217;s starred gists</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A <a class="reference internal" href="result.html"><em>Result</em></a></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">You must be authenticated</p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pygithub3.services.gists.Gist.unstar">
+<tt class="descname">unstar</tt><big>(</big><em>id</em><big>)</big><a class="headerlink" href="#pygithub3.services.gists.Gist.unstar" title="Permalink to this definition">¶</a></dt>
+<dd><p>Unstar a gist</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>id</strong> (<em>int</em>) &#8211; Gist id</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">You must be authenticated</p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pygithub3.services.gists.Gist.update">
+<tt class="descname">update</tt><big>(</big><em>id</em>, <em>data</em><big>)</big><a class="headerlink" href="#pygithub3.services.gists.Gist.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update a single gist</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>id</strong> (<em>int</em>) &#8211; Gist id</li>
+<li><strong>data</strong> (<em>dict</em>) &#8211; Input. See <a class="reference external" href="http://developer.github.com/v3/gists">github gists doc</a></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">You must be authenticated</p>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">gist_service</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s">&#39;edited&#39;</span><span class="p">,</span>
+    <span class="n">files</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;xample.py&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&#39;filename&#39;</span><span class="p">:</span> <span class="s">&#39;new_xample.py&#39;</span><span class="p">,</span>
+        <span class="s">&#39;content&#39;</span><span class="p">:</span> <span class="s">&#39;import new_code&#39;</span><span class="p">}}))</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="comments">
+<span id="comments-service"></span><h2>Comments<a class="headerlink" href="#comments" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pygithub3.services.gists.Comments">
+<em class="property">class </em><tt class="descclassname">pygithub3.services.gists.</tt><tt class="descname">Comments</tt><big>(</big><em>**config</em><big>)</big><a class="headerlink" href="#pygithub3.services.gists.Comments" title="Permalink to this definition">¶</a></dt>
+<dd><p>Consume <a class="reference external" href="http://developer.github.com/v3/gists/comments">Comments API</a></p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This service support <a class="reference internal" href="services.html#mimetypes-section"><em>MimeTypes</em></a> configuration</p>
+</div>
+<dl class="method">
+<dt id="pygithub3.services.gists.Comments.create">
+<tt class="descname">create</tt><big>(</big><em>gist_id</em>, <em>message</em><big>)</big><a class="headerlink" href="#pygithub3.services.gists.Comments.create" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a comment</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>gist_id</strong> (<em>int</em>) &#8211; Gist id</li>
+<li><strong>message</strong> (<em>str</em>) &#8211; Comment&#8217;s message</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">You must be authenticated</p>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">comment_service</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s">&#39;comment&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pygithub3.services.gists.Comments.delete">
+<tt class="descname">delete</tt><big>(</big><em>id</em><big>)</big><a class="headerlink" href="#pygithub3.services.gists.Comments.delete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete a comment</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>id</strong> (<em>int</em>) &#8211; Comment id</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">You must be authenticated</p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pygithub3.services.gists.Comments.get">
+<tt class="descname">get</tt><big>(</big><em>id</em><big>)</big><a class="headerlink" href="#pygithub3.services.gists.Comments.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a single comment</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>id</strong> (<em>int</em>) &#8211; Comment id</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pygithub3.services.gists.Comments.list">
+<tt class="descname">list</tt><big>(</big><em>gist_id</em><big>)</big><a class="headerlink" href="#pygithub3.services.gists.Comments.list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get gist&#8217;s comments</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>gist_id</strong> (<em>int</em>) &#8211; Gist id</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A <a class="reference internal" href="result.html"><em>Result</em></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pygithub3.services.gists.Comments.update">
+<tt class="descname">update</tt><big>(</big><em>id</em>, <em>message</em><big>)</big><a class="headerlink" href="#pygithub3.services.gists.Comments.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update a comment</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>id</strong> (<em>int</em>) &#8211; Comment id</li>
+<li><strong>message</strong> (<em>str</em>) &#8211; Comment&#8217;s message</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">You must be authenticated</p>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Gists services</a><ul>
+<li><a class="reference internal" href="#gist">Gist</a></li>
+<li><a class="reference internal" href="#comments">Comments</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="repos.html"
+                        title="previous chapter">Repos services</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="git_data.html"
+                        title="next chapter">Git Data services</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/gists.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="git_data.html" title="Git Data services"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="repos.html" title="Repos services"
+             >previous</a> |</li>
+        <li><a href="index.html">pygithub3 0.3 documentation</a> &raquo;</li>
+          <li><a href="services.html" >Services</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012, David Medina.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

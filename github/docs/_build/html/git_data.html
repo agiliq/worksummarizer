@@ -1,0 +1,156 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Git Data services &mdash; pygithub3 0.3 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.3',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="pygithub3 0.3 documentation" href="index.html" />
+    <link rel="up" title="Services" href="services.html" />
+    <link rel="next" title="Pull Requests service" href="pull_requests.html" />
+    <link rel="prev" title="Gists services" href="gists.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="pull_requests.html" title="Pull Requests service"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="gists.html" title="Gists services"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">pygithub3 0.3 documentation</a> &raquo;</li>
+          <li><a href="services.html" accesskey="U">Services</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="git-data-services">
+<span id="git-data-service"></span><h1>Git Data services<a class="headerlink" href="#git-data-services" title="Permalink to this headline">¶</a></h1>
+<p><strong>Example</strong>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">pygithub3</span> <span class="kn">import</span> <span class="n">Github</span>
+
+<span class="n">gh</span> <span class="o">=</span> <span class="n">Github</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="s">&#39;someone&#39;</span><span class="p">,</span> <span class="n">repo</span><span class="o">=</span><span class="s">&#39;some_repo&#39;</span><span class="p">)</span>
+
+<span class="n">a_blob</span> <span class="o">=</span> <span class="n">gh</span><span class="o">.</span><span class="n">git_data</span><span class="o">.</span><span class="n">blobs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;a long sha&#39;</span><span class="p">)</span>
+
+<span class="n">dev_branch</span> <span class="o">=</span> <span class="n">gh</span><span class="o">.</span><span class="n">git_data</span><span class="o">.</span><span class="n">references</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;heads/add_a_thing&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="section" id="gitdata">
+<h2>GitData<a class="headerlink" href="#gitdata" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="blobs">
+<span id="blobs-service"></span><h2>Blobs<a class="headerlink" href="#blobs" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="commits">
+<span id="gitdata-commits-service"></span><h2>Commits<a class="headerlink" href="#commits" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="references">
+<span id="references-service"></span><h2>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="tags">
+<span id="tags-service"></span><h2>Tags<a class="headerlink" href="#tags" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="trees">
+<span id="trees-service"></span><h2>Trees<a class="headerlink" href="#trees" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Git Data services</a><ul>
+<li><a class="reference internal" href="#gitdata">GitData</a></li>
+<li><a class="reference internal" href="#blobs">Blobs</a></li>
+<li><a class="reference internal" href="#commits">Commits</a></li>
+<li><a class="reference internal" href="#references">References</a></li>
+<li><a class="reference internal" href="#tags">Tags</a></li>
+<li><a class="reference internal" href="#trees">Trees</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="gists.html"
+                        title="previous chapter">Gists services</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="pull_requests.html"
+                        title="next chapter">Pull Requests service</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/git_data.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="pull_requests.html" title="Pull Requests service"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="gists.html" title="Gists services"
+             >previous</a> |</li>
+        <li><a href="index.html">pygithub3 0.3 documentation</a> &raquo;</li>
+          <li><a href="services.html" >Services</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012, David Medina.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>
