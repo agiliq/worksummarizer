@@ -12,7 +12,7 @@ import sendgrid
 def main():
     s = sendgrid.Sendgrid(sendgrid_auth[0], sendgrid_auth[1], secure=True)
     
-    #Github object with authenticated credentials    
+    #Github object with authentication credentials    
     gh = Github(login=github_auth[0], password=github_auth[1])
     
     #Get agiliq user object and repos
@@ -27,7 +27,6 @@ def main():
     
     subject = "Agiliq-Github Summary for the day " + tday.strftime("%b %d %Y")
     plain_body = ""
-    colors = {'funderhub': 'cyan', 'Occasio': 'green', 'TexStar University': 'brown'}
     user_activity = {}
 
     for repo in agiliq_repos:
@@ -53,8 +52,7 @@ def main():
                     plain_body += "<hr/> <b>{0}</b> @ <font color=".format(
                         commit_date_time.strftime("%H:%M"),
                         name
-                        ) + \
-                    colors.get(repo.name, 'red') + ">{0}</font> <a href='{3}'>{1}</a> <br/> {2} <br/>".format(
+                        ) + 'red' + ">{0}</font> <a href='{3}'>{1}</a> <br/> {2} <br/>".format(
                         repo.name,
                         "comitted",
                         k.sha[:10],
