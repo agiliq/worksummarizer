@@ -6,11 +6,11 @@ email_to = [
     'arjunc77',  # Github Id
     ),
     ('dheeru@agiliq.com', 'Dheeraj Kumar Ketireddy', 'dheeru0198'),
-    (' ', 'Akshar Raaj', 'akshar-raaj'),
-    (' ', 'Bala Subrahmanyam Varanasi', 'Balu-Varanasi'),
-    (' ', 'Dheeraj Sayala', 'dheerosaur'),
-    (' ', 'Shabda Raaj', 'shabda'),
-    (' ', 'Thejaswi Puthraya', 'theju'),
-    (' ', ' ', 'bitaVersion'),
-    (' ', ' ', 'bhaskar')
+    ('akshar@agiliq.com', 'Akshar Raaj', 'akshar-raaj'),
+    ('balu@agiliq.com', 'Bala Subrahmanyam Varanasi', 'Balu-Varanasi'),
+    ('dheeraj@agiliq.com', 'Dheeraj Sayala', 'dheerosaur'),
+    ('shabda@agiliq.com', 'Shabda Raaj', 'shabda'),
+    ('thejaswi@agiliq.com', 'Thejaswi Puthraya', 'theju'),
+    ('saket@agiliq.com', 'Saket Bhushan', 'bitaVersion'),
+    ('bhaskar@agiliq.com', 'Bhaskar Rao', 'bhaskar')
     ]
