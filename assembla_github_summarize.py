@@ -1,7 +1,7 @@
 # -*- coding: utf-8 *-*
 from pygithub3 import Github
 from pygithub3.services.repos import Commits
-from assembla.models import *
+from assembla.assembla.models import *
 from auth import assembla_auth, sendgrid_auth, github_auth
 import sendgrid
 from datetime import datetime, timedelta
