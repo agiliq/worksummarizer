@@ -1,3 +1,7 @@
+assembla_auth = (
+    '',  # Username
+    ''  # Password
+    )
 github_auth = (
     '',  # Username
     ''  # Password
