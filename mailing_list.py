@@ -5,7 +5,7 @@ email_to = [
     'Venkata Ramana C',  # Name
     'arjunc77',  # Github Id
     ),
-    ('dheeru@agiliq.com', 'Dheeraj Kumar', 'dheeru0198'),
+    ('dheeru@agiliq.com', 'Dheeraj Kumar Ketireddy', 'dheeru0198'),
     (' ', 'Akshar Raaj', 'akshar-raaj'),
     (' ', 'Bala Subrahmanyam Varanasi', 'Balu-Varanasi'),
     (' ', 'Dheeraj Sayala', 'dheerosaur'),

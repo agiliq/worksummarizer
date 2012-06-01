@@ -95,7 +95,7 @@ def main():
                 if name not in github_user_activity.keys():
                         github_user_activity[name] = github_body
 
-                if name == user[2]:
+                if name == user[2] or name == user[1]:
                     github_body += "<hr/> <b>{0}</b> @ <font color=".format(
                         commit_date_time.strftime("%H:%M"),
                         name
