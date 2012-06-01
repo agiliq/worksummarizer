@@ -43,7 +43,6 @@ def main():
     github_body = ""
     github_user_activity = {}
 
-
     for event in events:
         edt = parse(event.date)
         event_date_time = edt.astimezone(local_zone)
@@ -111,8 +110,14 @@ def main():
                         github_user_activity[name] += github_body
                     github_body = ""
 
-    user_activity.update(github_user_activity)
+    #check if a user has same name in assembla and github
+    for k in user_activity.keys():
+        if k in github_user_activity.keys():
+            user_activity[k] = user_activity[k] + github_user_activity[k]
+            github_user_activity.pop(k)
     
+    user_activity.update(github_user_activity)
+
     html = "<html><body>"
     holiday = True
     for k, v in user_activity.iteritems():
@@ -121,6 +126,7 @@ def main():
             html += "<div>" + "<h3>" + k + "</h3>" + v + "</div>"
             holiday = False
     html += "</body></html>"
+    
     #check if no activity done. if so do not send mail.
     if not holiday:
         message = sendgrid.Message("ramana@agiliq.com", subject, "", "<div>" + html + "</div>")
