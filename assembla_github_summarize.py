@@ -34,7 +34,7 @@ def main():
 
     tday = datetime.now()
     tday = tday.replace(tzinfo=local_zone)
-    this_day = (tday - timedelta(hours=48)).date()
+    this_day = (tday - timedelta(hours=24)).date()
     subject = "Agiliq-Assembla Summary for the day " + tday.strftime("%b %d %Y")
     plain_body = ""
     colors = {'funderhub': 'cyan', 'Occasio': 'green', 'TexStar University': 'brown'}
