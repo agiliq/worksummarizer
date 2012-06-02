@@ -96,6 +96,7 @@ def main():
                         github_user_activity[name] = github_body
 
                 if name == user[2] or name == user[1]:
+                    commit_url = repo.html + '/commit/' + k.sha
                     github_body += "<hr/> <b>{0}</b> @ <font color=".format(
                         commit_date_time.strftime("%H:%M"),
                         name
@@ -103,7 +104,7 @@ def main():
                         repo.name,
                         "comitted",
                         k.sha[:10],
-                        repo.html_url,
+                        commit_url,
                         )
                     github_body += "<font color='violet'>" + k.commit.message + "</font><br/>"                
                     
