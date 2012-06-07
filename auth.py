@@ -11,3 +11,8 @@ sendgrid_auth = (
     '',  # Username
     ''  # Password
     )
+unfuddle_auth = (
+    '',   # Unfuddle account name
+    '',   # Unfuddle username
+    ''   # Password
+    )
